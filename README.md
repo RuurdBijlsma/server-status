@@ -1,6 +1,6 @@
 # live-status
 
-![Performance screenshot](/res/live-status?raw=true "Screenshot of performance page")
+![Performance screenshot](/res/live-status.png?raw=true "Screenshot of performance page")
 
 
 ## Project setup
