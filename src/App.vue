@@ -15,6 +15,11 @@
 </template>
 
 <script>
+    //TODO:
+    //Visualize performance usage nicely with graphs/bars
+    //Up time graph with raspberry pi
+    //Set dns to direct status.ruurd.dev to raspberry pi
+
     import Performance from '@/views/Performance';
     import Home from '@/views/Home';
     import ServerApi from "@/js/ServerApi";
