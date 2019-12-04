@@ -1,9 +1,19 @@
 class ServerApi {
+    async getUptime() {
+        return await this.json('http://localhost:3000/uptime', {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+    }
+
     setEndpoint(endPoint) {
         this.endPoint = endPoint;
         this.user = null;
         this.password = null;
-        this.status = {state:null};
+        this.status = {state: null};
         this.fetchInterval = -1;
     }
 
