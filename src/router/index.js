@@ -1,27 +1,44 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import CpuPerformance from "@/views/CpuPerformance";
+import MemoryPerformance from "@/views/MemoryPerformance";
+import StoragePerformance from "@/views/StoragePerformance";
+import NetworkPerformance from "@/views/NetworkPerformance";
+import Login from "@/views/Login";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-]
+    {path: '/performance', redirect: '/performance/cpu'},
+    {
+        path: '/performance/cpu',
+        name: 'cpu-performance',
+        component: CpuPerformance
+    },
+    {
+        path: '/performance/memory',
+        name: 'memory-performance',
+        component: MemoryPerformance
+    },
+    {
+        path: '/performance/storage',
+        name: 'storage-performance',
+        component: StoragePerformance
+    },
+    {
+        path: '/performance/network',
+        name: 'network-performance',
+        component: NetworkPerformance
+    },
+    {
+        path: '/performance/login',
+        name: 'login',
+        component: Login,
+    },
+];
 
 const router = new VueRouter({
-  routes
-})
+    routes
+});
 
 export default router
