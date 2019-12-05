@@ -1,37 +1,71 @@
 <template>
     <div class="memory-performance" v-if="status!==null">
         <h1>Memory</h1>
-        <p>used memory: {{status.state.memory.used}}</p>
-        <p>total memory: {{status.state.memory.total}}</p>
+        <line-chart class="chart" :chart-data="chartData" :options="chartOptions"/>
+        <p>Memory Usage: {{readableBytes(status.state.memory.used)}}</p>
+        <p>Total Available Memory: {{readableBytes(status.state.memory.available)}}</p>
+        <p>Swap Memory Usage: {{readableBytes(status.state.memory.swapused)}}</p>
     </div>
 </template>
 
 <script>
-    import ServerApi from "@/js/ServerApi";
+    import LineChart from "@/components/LineChart";
+    import Utils from '@/js/Utils.js';
 
     export default {
         name: "MemoryPerformance",
+        components: {
+            LineChart
+        },
         data() {
             return {
-                interval: -1,
-                status: null,
+                chartData: {},
+                chartOptions: {
+                    responsive: true,
+                },
             }
         },
-        mounted() {
-            this.interval = setInterval(() => {
-                if (ServerApi.status.state !== null) {
-                    clearInterval(this.interval);
-                    this.status = ServerApi.status;
-                }
-            }, 50);
+        props: {
+            memoryUsed: Array,
+            swapUsed: Array,
+            labels: Array,
+            status: Object,
         },
-
-        beforeDestroy() {
-            clearInterval(this.interval);
-        }
+        mounted() {
+            this.fillData();
+        },
+        watch: {
+            labels() {
+                this.fillData();
+            }
+        },
+        methods: {
+            readableBytes(bytes) {
+                return Utils.bytesToReadable(bytes);
+            },
+            fillData() {
+                this.chartData = {
+                    labels: this.labels,
+                    datasets: [
+                        {
+                            label: 'Swap Memory Used (bytes)',
+                            backgroundColor: '#095db3',
+                            data: this.swapUsed
+                        },
+                        {
+                            label: 'Memory Used (bytes)',
+                            backgroundColor: '#448aff',
+                            data: this.memoryUsed
+                        },
+                    ]
+                }
+            },
+        },
     }
 </script>
 
 <style scoped>
-
+    .chart {
+        max-width: 620px;
+    }
 </style>

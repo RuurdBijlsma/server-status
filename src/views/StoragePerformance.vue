@@ -1,36 +1,49 @@
 <template>
     <div class="storage-performance" v-if="status!==null">
         <h1>Storage</h1>
-        <p v-for="device in status.state.storage" :key="device.fs">{{device.fs}}: {{device.used}} / {{device.size}}</p>
+        <div v-for="device in status.state.storage" :key="device.fs">
+            <md-divider/>
+            <span class="headline md-headline">{{device.fs}}</span>
+            <md-subheader>{{device.type}}</md-subheader>
+            <md-progress-bar md-mode="determinate" :md-value="device.used / device.size * 100"/>
+            <p>Used: {{readableBytes(device.used)}}</p>
+            <p>Total: {{readableBytes(device.size)}}</p>
+        </div>
     </div>
 </template>
 
 <script>
-    import ServerApi from "@/js/ServerApi";
+    import Utils from '@/js/Utils.js';
 
     export default {
         name: "StoragePerformance",
         data() {
             return {
-                interval: -1,
-                status: null,
+                percentage: 0
             }
         },
-        mounted() {
-            this.interval = setInterval(() => {
-                if (ServerApi.status.state !== null) {
-                    clearInterval(this.interval);
-                    this.status = ServerApi.status;
-                }
-            }, 50);
+        props: {
+            status: Object,
         },
-
-        beforeDestroy() {
-            clearInterval(this.interval);
-        }
+        watch: {
+            status: {
+                deep: true,
+                handler() {
+                    console.log(this.status);
+                }
+            }
+        },
+        methods: {
+            readableBytes(bytes) {
+                return Utils.bytesToReadable(bytes);
+            },
+        },
     }
 </script>
 
 <style scoped>
-
+    .headline {
+        margin-top: 10px;
+        display:inline-block;
+    }
 </style>

@@ -13,22 +13,26 @@ const routes = [
     {
         path: '/performance/cpu',
         name: 'cpu-performance',
-        component: CpuPerformance
+        component: CpuPerformance,
+        props: true,
     },
     {
         path: '/performance/memory',
         name: 'memory-performance',
-        component: MemoryPerformance
+        component: MemoryPerformance,
+        props: true,
     },
     {
         path: '/performance/storage',
         name: 'storage-performance',
-        component: StoragePerformance
+        component: StoragePerformance,
+        props: true,
     },
     {
         path: '/performance/network',
         name: 'network-performance',
-        component: NetworkPerformance
+        component: NetworkPerformance,
+        props: true,
     },
     {
         path: '/performance/login',

@@ -1,6 +1,6 @@
 <template>
     <div class="about">
-        <md-app>
+        <md-app class="app">
             <md-app-drawer md-permanent="clipped" class="drawer">
                 <md-list class="drawer-list">
                     <md-list-item to="/performance/cpu">
@@ -31,8 +31,9 @@
                     </md-list-item>
                 </md-list>
             </md-app-drawer>
-            <md-app-content>
-                <router-view/>
+            <md-app-content class="content">
+                <router-view v-if="status!==null" :labels="labels" :status="status" :loads="loads" :temps="temps"
+                             :swapUsed="swapUsed" :memoryUsed="memoryUsed" :rxs="rxs" :txs="txs"/>
             </md-app-content>
         </md-app>
     </div>
@@ -45,6 +46,16 @@
         name: 'performance',
         data() {
             return {
+                interval: -1,
+                status: null,
+                firstDataTime: -1,
+                loads: [],
+                temps: [],
+                labels: [],
+                swapUsed: [],
+                memoryUsed: [],
+                txs: [],
+                rxs: [],
             }
         },
         components: {},
@@ -54,7 +65,46 @@
             } else {
                 let {user, password} = JSON.parse(localStorage.auth);
                 await ServerApi.auth(user, password);
+
+                this.interval = setInterval(() => {
+                    if (ServerApi.status.state !== null) {
+                        clearInterval(this.interval);
+                        this.status = ServerApi.status;
+                        this.firstDataTime = performance.now();
+                        this.addData();
+                    }
+                }, 50);
             }
+        },
+        methods: {
+            addData() {
+                // CPU Data:
+                let load = this.status.state.load.currentload;
+                let temp = this.status.state.temperature.main;
+                let swapUsed = this.status.state.memory.swapused;
+                let memoryUsed = this.status.state.memory.used;
+                let networkRxs = this.status.state.network[0].rx_sec;
+                let networkTxs = this.status.state.network[0].tx_sec;
+                let secondsPassed = Math.round((performance.now() - this.firstDataTime) / 1000);
+                this.temps.push(temp);
+                this.loads.push(load);
+                this.swapUsed.push(swapUsed);
+                this.memoryUsed.push(memoryUsed);
+                this.rxs.push(networkRxs);
+                this.txs.push(networkTxs);
+                this.labels.push(secondsPassed);
+            }
+        },
+        watch: {
+            status: {
+                deep: true,
+                handler() {
+                    this.addData();
+                }
+            }
+        },
+        beforeDestroy() {
+            clearInterval(this.interval);
         },
     }
 </script>
@@ -68,9 +118,8 @@
     .drawer-list {
     }
 
-    .content {
-        vertical-align: top;
-        display: inline-block;
+    .app{
+        height:100%;
     }
 
 </style>
