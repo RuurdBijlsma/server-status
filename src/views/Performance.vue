@@ -105,6 +105,7 @@
         },
         beforeDestroy() {
             clearInterval(this.interval);
+            clearInterval(ServerApi.fetchInterval);
         },
     }
 </script>
@@ -118,8 +119,8 @@
     .drawer-list {
     }
 
-    .app{
-        height:100%;
+    .app {
+        height: 100%;
     }
 
 </style>
