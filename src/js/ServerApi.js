@@ -18,6 +18,7 @@ class ServerApi {
     }
 
     async startFetching() {
+        this.stopFetching();
         this.fetchInterval = setInterval(async () => {
             this.status.state = await this.getStatus();
         }, 3000);

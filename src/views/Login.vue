@@ -100,7 +100,8 @@
                     this.lastUser = `${this.form.user}`;
                     this.userSaved = true;
                     this.clearForm();
-                    await this.$router.push('/performance/cpu');
+                    location.href = '#/performance/cpu';
+                    location.reload();
                 } else {
                     this.loginFail = true;
                 }

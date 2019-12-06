@@ -32,7 +32,7 @@
                 </md-list>
             </md-app-drawer>
             <md-app-content class="content">
-                <router-view v-if="status!==null" :labels="labels" :status="status" :loads="loads" :temps="temps"
+                <router-view :labels="labels" :status="status" :loads="loads" :temps="temps"
                              :swapUsed="swapUsed" :memoryUsed="memoryUsed" :rxs="rxs" :txs="txs"/>
             </md-app-content>
         </md-app>
@@ -61,6 +61,7 @@
         components: {},
         async mounted() {
             if (localStorage.getItem('auth') === null && !this.$route.path.includes('/login')) {
+                console.log("HEHHEHEHE");
                 await this.$router.push('/performance/login');
             } else {
                 let {user, password} = JSON.parse(localStorage.auth);
@@ -105,7 +106,7 @@
         },
         beforeDestroy() {
             clearInterval(this.interval);
-            clearInterval(ServerApi.fetchInterval);
+            ServerApi.stopFetching();
         },
     }
 </script>
