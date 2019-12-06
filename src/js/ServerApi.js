@@ -1,6 +1,6 @@
 class ServerApi {
     async getUptime() {
-        return await this.json('http://localhost:3000/uptime', {
+        return await this.json('https://status.ruurd.dev:3000', {
             method: 'GET',
             mode: 'cors',
             headers: {
