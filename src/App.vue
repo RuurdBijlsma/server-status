@@ -23,7 +23,7 @@
     import Performance from '@/views/Performance';
     import Home from '@/views/Home';
     import ServerApi from "@/js/ServerApi";
-    ServerApi.setEndpoint('https://ruurd.dev:3000');
+    ServerApi.setEndpoint('https://api.ruurd.dev');
 
 
     export default {
