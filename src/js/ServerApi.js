@@ -11,7 +11,7 @@ class ServerApi {
 
     setEndpoint(endPoint) {
         this.endPoint = endPoint;
-        this.user = null;
+        this.email = null;
         this.password = null;
         this.status = {state: null};
         this.fetchInterval = -1;
@@ -30,7 +30,7 @@ class ServerApi {
     }
 
     async getStatus() {
-        if (this.user === null || this.password === null)
+        if (this.email === null || this.password === null)
             return false;
 
         return await this.json(this.endPoint + '/status', {
@@ -39,7 +39,7 @@ class ServerApi {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({user: this.user, password: this.password})
+            body: JSON.stringify({auth: {email: this.email, password: this.password}})
         });
     }
 
@@ -54,17 +54,17 @@ class ServerApi {
         }
     }
 
-    async auth(user, password) {
+    async auth(email, password) {
         let result = await this.json(this.endPoint + '/auth', {
             method: 'POST',
             mode: 'cors',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({user, password})
+            body: JSON.stringify({auth: {email, password}})
         });
         if (result === true) {
-            this.user = user;
+            this.email = email;
             this.password = password;
             this.startFetching();
         }

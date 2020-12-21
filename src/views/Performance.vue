@@ -64,8 +64,8 @@
                 console.log("HEHHEHEHE");
                 await this.$router.push('/performance/login');
             } else {
-                let {user, password} = JSON.parse(localStorage.auth);
-                await ServerApi.auth(user, password);
+                let {email, password} = JSON.parse(localStorage.auth);
+                await ServerApi.auth(email, password);
 
                 this.interval = setInterval(() => {
                     if (ServerApi.status.state !== null) {
