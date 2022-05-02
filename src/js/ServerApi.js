@@ -63,7 +63,8 @@ class ServerApi {
             },
             body: JSON.stringify({auth: {email, password}})
         });
-        if (result === true) {
+        console.log("Auth result: ", result);
+        if (result !== false) {
             this.email = email;
             this.password = password;
             this.startFetching();
