@@ -11,7 +11,7 @@
             </div>
             <div class="cpu" v-for="(cpu, i) in status.state.load.cpus">
                 <h3>CPU {{i}}</h3>
-                <p>Temperature: {{status.state.temperature.cores[i]}} °C</p>
+                <p v-if="i < status.state.temperature.cores.length">Temperature: {{status.state.temperature.cores[i]}} °C</p>
                 <p>Load: {{cpu.load.toFixed(2)}}%</p>
             </div>
         </div>
